@@ -7,6 +7,26 @@ module.exports = {
   devtool: 'inline-source-map',
   entry: './src/index.tsx',
   mode: process.env.NODE_ENV,
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    clean: true
+  },
+  cache: {
+    type: 'filesystem',
+    allowCollectingMemory: true,
+    buildDependencies: {
+      // This makes all dependencies of this file - build dependencies
+      config: [__filename],
+      // By default webpack and loaders are build dependencies
+    },
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+  },
+  devServer: {
+    static: './dist',
+  },
   module: {
     rules: [
       {
@@ -66,18 +86,10 @@ module.exports = {
       }
     ],
   },
-  resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
-  },
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    clean: true
-  },
-  devServer: {
-    static: './dist',
-  },
   plugins: [
+    new webpack.ProvidePlugin({
+      React: 'react',
+    }),
     new webpack.EnvironmentPlugin(['NODE_ENV']),
     new HtmlWebpackPlugin({
       templateContent: `<div id='root'></div>`

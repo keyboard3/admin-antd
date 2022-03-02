@@ -28,4 +28,3 @@ export const pageRoutes = menuRoutes.map(item => {
   if (item.path && item.component) return [item];
   return item.subs || [];
 }).reduceRight((cur, all) => [...cur, ...all], []) as Menu[];
-console.log("pageRoutes", pageRoutes);
