@@ -1,12 +1,12 @@
-const path = require("path");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const webpack = require("webpack");
+import path from "path";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import webpack from "webpack";
 const isProduction = process.env.NODE_ENV == "production";
-module.exports = {
+const config: webpack.Configuration = {
   devtool: 'inline-source-map',
   entry: './src/index.tsx',
-  mode: process.env.NODE_ENV,
+  mode: isProduction ? "production" : "development",
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
@@ -16,16 +16,11 @@ module.exports = {
     type: 'filesystem',
     allowCollectingMemory: true,
     buildDependencies: {
-      // This makes all dependencies of this file - build dependencies
       config: [__filename],
-      // By default webpack and loaders are build dependencies
     },
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
-  },
-  devServer: {
-    static: './dist',
   },
   module: {
     rules: [
@@ -97,3 +92,5 @@ module.exports = {
     new MiniCssExtractPlugin()
   ]
 };
+
+export default config;
